@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Pro - Enhanced Puzzle Game</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Play Sudoku with multiple game modes, notes, undo/redo, and modern features. Created by Ashish Raipure.">
+    <meta name="keywords" content="sudoku, puzzle, game, brain training, logic, notes, undo, redo">
+    <meta name="author" content="Ashish Raipure">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sudoku Pro">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icons/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='icons/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-content">
+                <div class="logo">
+                    <i class="fas fa-th-large"></i>
+                    <h1>Sudoku Pro</h1>
+                </div>
+                <p class="tagline">Classic Sudoku with modern features</p>
+                
+                <div class="game-intro">
+                    <div class="intro-card">
+                        <i class="fas fa-th-large"></i>
+                        <h3>Welcome to Sudoku Pro</h3>
+                        <p>Classic Sudoku with modern features: hints, undo/redo, notes, and validation. Perfect for all skill levels!</p>
+                        <div class="intro-features">
+                            <span class="feature-tag">5 Hints</span>
+                            <span class="feature-tag">Undo/Redo</span>
+                            <span class="feature-tag">Notes</span>
+                            <span class="feature-tag">Validation</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="continueBtn">
+                    <i class="fas fa-play"></i>
+                    Start Game
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Game Interface -->
+        <div class="game-interface" id="gameInterface" style="display: none;">
+            <!-- Header -->
+            <header class="game-header">
+                <div class="header-left">
+                    <button class="btn btn-icon" id="backBtn" title="Back to Menu">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="game-info">
+                        <h2 id="gameModeTitle">Classic Mode</h2>
+                        <span class="difficulty-badge" id="difficultyBadge">Medium</span>
+                    </div>
+                </div>
+                
+                <div class="header-center">
+                    <div class="timer" id="timer">00:00</div>
+                </div>
+                
+                <div class="header-right">
+                    <button class="btn btn-icon" id="statsBtn" title="Statistics">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                    <button class="btn btn-icon" id="settingsBtn" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <div class="control-group">
+                    <div class="difficulty-selector">
+                        <label for="difficulty">Difficulty:</label>
+                        <select id="difficulty" class="difficulty-select">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <button id="newGameBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Game
+                    </button>
+                    <button id="undoBtn" class="btn btn-secondary" disabled>
+                        <i class="fas fa-undo"></i>
+                        Undo
+                    </button>
+                    <button id="redoBtn" class="btn btn-secondary" disabled>
+                        <i class="fas fa-redo"></i>
+                        Redo
+                    </button>
+                </div>
+                
+                <div class="control-group">
+                    <button id="hintBtn" class="btn btn-secondary">
+                        <i class="fas fa-lightbulb"></i>
+                        Hint (<span id="hintCount">5</span>)
+                    </button>
+                    <button id="checkBtn" class="btn btn-secondary">
+                        <i class="fas fa-check"></i>
+                        Check
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- Game Board -->
+            <div class="game-board-container">
+                <div class="sudoku-board" id="sudokuBoard">
+                    <!-- Board will be generated by JavaScript -->
+                </div>
+                
+                <!-- Number Pad -->
+                <div class="number-pad">
+                    <div class="number-row">
+                        <button class="number-btn" data-number="1">1</button>
+                        <button class="number-btn" data-number="2">2</button>
+                        <button class="number-btn" data-number="3">3</button>
+                        <button class="number-btn" data-number="4">4</button>
+                        <button class="number-btn" data-number="5">5</button>
+                    </div>
+                    <div class="number-row">
+                        <button class="number-btn" data-number="6">6</button>
+                        <button class="number-btn" data-number="7">7</button>
+                        <button class="number-btn" data-number="8">8</button>
+                        <button class="number-btn" data-number="9">9</button>
+                        <button class="number-btn clear-btn" data-number="0">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                    </div>
+                    <div class="number-row">
+                        <button class="number-btn note-btn" id="noteBtn">
+                            <i class="fas fa-pencil-alt"></i>
+                            Notes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="status-bar" id="statusBar">
+                <div class="status-message" id="statusMessage">Select a game mode to start</div>
+                <div class="progress-indicator">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">0/81</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        
+
+
+        <!-- Win Modal -->
+        <div class="modal" id="winModal">
+            <div class="modal-content win-content">
+                <div class="win-animation">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2>Congratulations! 🎉</h2>
+                <p>You solved the puzzle!</p>
+                <div class="win-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Time:</span>
+                        <span class="stat-value" id="finalTime">00:00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Hints Used:</span>
+                        <span class="stat-value" id="finalHints">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Difficulty:</span>
+                        <span class="stat-value" id="finalDifficulty">Medium</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button id="playAgainBtn" class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        Play Again
+                    </button>
+                    <button id="shareBtn" class="btn btn-secondary">
+                        <i class="fas fa-share"></i>
+                        Share
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Modal -->
+        <div class="modal" id="statsModal">
+            <div class="modal-content stats-content">
+                <h2>Your Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-gamepad"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalGames">0</span>
+                            <span class="stat-label">Total Games</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-trophy"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="completedGames">0</span>
+                            <span class="stat-label">Completed</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalTime">0m</span>
+                            <span class="stat-label">Play Time</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalHints">0</span>
+                            <span class="stat-label">Hints Used</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="best-times">
+                    <h3>Best Times</h3>
+                    <div class="time-list" id="bestTimesList">
+                        <!-- Best times will be populated by JavaScript -->
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="closeStatsBtn">Close</button>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content settings-content">
+                <h2>Settings</h2>
+                <div class="settings-section">
+                    <h3>Appearance</h3>
+                    <div class="setting-item">
+                        <label for="themeSelect">Theme:</label>
+                        <select id="themeSelect" class="setting-select">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="animationToggle">Animations:</label>
+                        <input type="checkbox" id="animationToggle" checked>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Gameplay</h3>
+                    <div class="setting-item">
+                        <label for="autoCheckToggle">Auto-check errors:</label>
+                        <input type="checkbox" id="autoCheckToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="soundToggle">Sound effects:</label>
+                        <input type="checkbox" id="soundToggle" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label for="skipInstructionsToggle">Skip instructions:</label>
+                        <input type="checkbox" id="skipInstructionsToggle">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" id="closeSettingsBtn">Close</button>
+                    <button class="btn btn-primary" id="saveSettingsBtn">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div class="modal" id="errorModal">
+            <div class="modal-content">
+                <h2>Error</h2>
+                <p id="errorMessage">Something went wrong.</p>
+                <button id="closeErrorBtn" class="btn btn-secondary">Close</button>
+            </div>
+        </div>
+
+        <!-- Instructions Modal -->
+        <div class="modal" id="instructionsModal">
+            <div class="modal-content instructions-content">
+                <h2>How to Play Sudoku Pro 🧩</h2>
+                
+                <div class="instructions-section">
+                    <h3>📋 Game Rules</h3>
+                    <ul>
+                        <li>Fill the 9×9 grid with numbers 1-9</li>
+                        <li>Each row must contain all numbers 1-9 without repetition</li>
+                        <li>Each column must contain all numbers 1-9 without repetition</li>
+                        <li>Each 3×3 box must contain all numbers 1-9 without repetition</li>
+                    </ul>
+                </div>
+
+                <div class="instructions-section">
+                    <h3>🎮 How to Play</h3>
+                    <ul>
+                        <li><strong>Click/Tap</strong> on any empty cell to select it</li>
+                        <li><strong>Type numbers 1-9</strong> or use the number pad to fill cells</li>
+                        <li><strong>Use Notes</strong> to add temporary pencil marks (press 'N' or click Notes button)</li>
+                        <li><strong>Undo/Redo</strong> to correct mistakes</li>
+                        <li><strong>Get Hints</strong> when you're stuck (limited per game)</li>
+                        <li><strong>Check Solution</strong> to verify your progress</li>
+                    </ul>
+                </div>
+
+
+
+                <div class="instructions-section">
+                    <h3>💡 Tips for Success</h3>
+                    <ul>
+                        <li>Look for cells with only one possible number</li>
+                        <li>Use notes to track possible numbers</li>
+                        <li>Start with the Easy difficulty to learn</li>
+                        <li>Use the Check button to verify your progress</li>
+                        <li>Don't be afraid to use hints when stuck</li>
+                    </ul>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="startGameBtn" class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        Start Game
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="creator-info">
+            <span>Created by Ashish Raipure</span>
+            <span class="year">2025</span>
+        </div>
+    </footer>
+
+    <!-- Install Prompt -->
+    <div class="install-prompt" id="installPrompt">
+        <div class="install-content">
+            <p>📱 Install Sudoku Pro for the best experience!</p>
+            <button id="installBtn" class="btn btn-primary">Install App</button>
+            <button id="dismissInstallBtn" class="btn btn-secondary">Not Now</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pwa.js') }}"></script>
+</body>
+</html> 

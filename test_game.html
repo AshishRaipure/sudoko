@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Sudoku Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Sudoku Game Test</h1>
+    <div id="status">Loading...</div>
+    
+    <script>
+        // Test if the game loads without errors
+        window.addEventListener('load', function() {
+            const status = document.getElementById('status');
+            
+            try {
+                // Check if the game class exists
+                if (typeof SudokuPro !== 'undefined') {
+                    status.innerHTML = '<span class="success">✓ SudokuPro class loaded successfully</span>';
+                    
+                    // Try to create an instance
+                    try {
+                        const game = new SudokuPro();
+                        status.innerHTML += '<br><span class="success">✓ Game instance created successfully</span>';
+                    } catch (error) {
+                        status.innerHTML += '<br><span class="error">✗ Error creating game instance: ' + error.message + '</span>';
+                        console.error('Game instance error:', error);
+                    }
+                } else {
+                    status.innerHTML = '<span class="error">✗ SudokuPro class not found</span>';
+                }
+            } catch (error) {
+                status.innerHTML = '<span class="error">✗ Error loading game: ' + error.message + '</span>';
+                console.error('Loading error:', error);
+            }
+        });
+    </script>
+    
+    <!-- Include the game script -->
+    <script src="static/js/game.js"></script>
+</body>
+</html> 

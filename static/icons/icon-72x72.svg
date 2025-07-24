@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+    
+    <defs>
+        <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#e0e0e0" stroke-width="1"/>
+        </pattern>
+        <pattern id="bold-grid" width="90" height="90" patternUnits="userSpaceOnUse">
+            <path d="M 90 0 L 0 0 0 90" fill="none" stroke="#666" stroke-width="2"/>
+        </pattern>
+    </defs>
+    
+    
+    <!-- Background -->
+    <rect width="72" height="72" fill="#4CAF50" rx="8"/>
+    
+    <!-- Grid patterns -->
+    <rect width="72" height="72" fill="url(#bold-grid)"/>
+    <rect width="72" height="72" fill="url(#grid)"/>
+    
+    <!-- Sample numbers for visual appeal -->
+    <g fill="#333" font-family="Arial, sans-serif" font-weight="bold">
+        <text x="10.799999999999999" y="18.0" font-size="5.76">5</text>
+        <text x="25.2" y="32.4" font-size="5.76">3</text>
+        <text x="39.6" y="46.800000000000004" font-size="5.76">7</text>
+        <text x="54.0" y="18.0" font-size="5.76">1</text>
+        <text x="18.0" y="54.0" font-size="5.76">9</text>
+    </g>
+    
+    <!-- App title -->
+    <text x="36.0" y="64.8" text-anchor="middle" fill="white" 
+          font-family="Arial, sans-serif" font-size="4.32" font-weight="bold">SUDOKU</text>
+</svg>

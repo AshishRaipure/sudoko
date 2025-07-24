@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  sudoku-app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - HOST=0.0.0.0
+      - PORT=5000
+      - DEBUG=False
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add Nginx reverse proxy for production
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - sudoku-app
+    restart: unless-stopped
+    profiles:
+      - production 

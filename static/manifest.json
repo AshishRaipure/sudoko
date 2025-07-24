@@ -1,0 +1,147 @@
+{
+  "name": "Sudoku Pro - Enhanced Puzzle Game",
+  "short_name": "Sudoku Pro",
+  "description": "Play Sudoku with multiple game modes, notes, undo/redo, and modern features. Created by Ashish Raipure.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["games", "puzzle", "brain-training"],
+  "icons": [
+    {
+      "src": "/static/icons/icon-36x36.svg",
+      "sizes": "36x36",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-48x48.svg",
+      "sizes": "48x48",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-72x72.svg",
+      "sizes": "72x72",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-96x96.svg",
+      "sizes": "96x96",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-128x128.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-144x144.svg",
+      "sizes": "144x144",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-152x152.svg",
+      "sizes": "152x152",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-384x384.svg",
+      "sizes": "384x384",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Classic Game",
+      "short_name": "Classic",
+      "description": "Start a new classic Sudoku game",
+      "url": "/?mode=classic",
+      "icons": [
+        {
+          "src": "/static/icons/icon-96x96.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Daily Challenge",
+      "short_name": "Daily",
+      "description": "Play today's daily challenge",
+      "url": "/?mode=daily",
+      "icons": [
+        {
+          "src": "/static/icons/icon-96x96.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Time Attack",
+      "short_name": "Time Attack",
+      "description": "Race against time to solve puzzles",
+      "url": "/?mode=time_attack",
+      "icons": [
+        {
+          "src": "/static/icons/icon-96x96.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "features": [
+    "Cross Platform",
+    "Offline Support",
+    "Multiple Game Modes",
+    "Notes/Pencil Marks",
+    "Undo/Redo",
+    "Statistics Tracking",
+    "Dark/Light Themes",
+    "Accessibility Features"
+  ],
+  "screenshots": [
+    {
+      "src": "/static/screenshots/screenshot-1.html",
+      "sizes": "1280x720",
+      "type": "text/html",
+      "form_factor": "wide",
+      "label": "Sudoku Pro Game Interface"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "protocol_handlers": [
+    {
+      "protocol": "web+sudo",
+      "url": "/?puzzle=%s"
+    }
+  ]
+} 
